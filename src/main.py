@@ -1,4 +1,6 @@
 import jwt
+import json
+from icecream import ic
 
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -60,7 +62,13 @@ def get_user(user: schemas.User=Depends(get_current_user)):
 
 @app.post('/users/tasks', response_model=schemas.Task)
 def create_task(task: schemas.Task, user: schemas.User = Depends(get_current_user), db: Session = Depends(get_db)):
-    return crud.create_user_task(db, task, user.id)
+    output_obj = schemas.Task.from_orm(crud.create_user_task(db, task, user.id))
+    # ic(output_obj.dict())
+    # output_obj["due_dateTime"] = output_obj["due_dateTime"].isoformat()
+    # print(output_obj)
+    return output_obj
+    # return json.dumps({key:val for key, val in output_obj.__dict__.items() if not key.startswith('_')})
+
 
 @app.get('/users/tasks', response_model=schemas.User)
 def show_tasks(db: Session = Depends(get_db), user: schemas.User = Depends(get_current_user)):

@@ -7,7 +7,7 @@ from pydantic import BaseModel
 class TaskBase(BaseModel):
     title: str
     description: str
-    due_date: Optional[datetime]
+    due_dateTime: Optional[datetime]
 
 class TaskCreate(TaskBase):
     pass

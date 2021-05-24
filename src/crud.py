@@ -41,12 +41,14 @@ def get_tasks(db: Session, user_id: int)-> List[models.Task]:
 
 def create_user_task(db: Session, task: schemas.TaskCreate, user_id: int):
     # mytime = datetime
-    db_task = models.Task(title=task.title, description=task.description, due_dateTime=task.due_date, owner_id=user_id)
+    db_task = models.Task(title=task.title, description=task.description, due_dateTime=task.due_dateTime, owner_id=user_id)
     db.add(db_task)
-    # ic(db_task.__dict__)
+    ic(db_task.__dict__)
     db.commit()
-    # task1 = db.query(models.Task).filter(models.Task.title == task.title).all()
-    # ic(task1)
+    task1 = db.query(models.Task).filter(models.Task.id == db_task.id).first()
+    # task1.due_dateTime = task1.due_dateTime.isoformat()
+    # ic(task1.__dict__)
+    
     # ic(db_task.__dict__)
     # db.refresh(db_task)
-    return db_task
+    return task1
