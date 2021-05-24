@@ -1,5 +1,6 @@
 from typing import List
 from icecream import ic
+import pydantic
 
 from sqlalchemy.orm import Session
 from datetime import datetime
@@ -38,11 +39,14 @@ def create_user(db: Session, user: schemas.UserCreate)-> schemas.User:
 def get_tasks(db: Session, user_id: int)-> List[models.Task]:
     return db.query(models.Task).filter(models.Task.owner_id == user_id).all()
 
-def create_user_task(db: Session, task: schemas.TaskCreate, user_id: int)-> models.Task:
+def create_user_task(db: Session, task: schemas.TaskCreate, user_id: int):
+    # mytime = datetime
     db_task = models.Task(title=task.title, description=task.description, due_dateTime=task.due_date, owner_id=user_id)
     db.add(db_task)
     # ic(db_task.__dict__)
     db.commit()
+    # task1 = db.query(models.Task).filter(models.Task.title == task.title).all()
+    # ic(task1)
     # ic(db_task.__dict__)
-    db.flush(db_task)
+    # db.refresh(db_task)
     return db_task
