@@ -1,19 +1,19 @@
 from typing import List
 from icecream import ic
-import pydantic
 
 from sqlalchemy.orm import Session
-from datetime import datetime
+# from datetime import datetime
 
 from passlib.hash import bcrypt
 
-import models, schemas
+import models
+import schemas
 
 
 def get_user(db: Session, user_id: int)-> models.User or None:
     return db.query(models.User).filter(models.User.id == user_id).first()
 
-def get_user_by_email(db: Session, email: str):  #type hint return type later
+def get_user_by_email(db: Session, email: str) -> models.User or None:  #type hint return type later
     return db.query(models.User).filter(models.User.email == email).first()
 
 # def get_users(db: Session, skip: int = 0, lim: int = 100)-> List[models.User]:
